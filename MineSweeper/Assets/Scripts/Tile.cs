@@ -13,6 +13,10 @@ public class Tile : MonoBehaviour
     [SerializeField] private Sprite mineHitTile;
 
     private SpriteRenderer spriteRenderer;
+    public GameManager game;
+    public int x;
+    public int y;
+
     public bool flaged = false;
     public bool active = true;
     public bool isMine = false;
@@ -43,18 +47,38 @@ public class Tile : MonoBehaviour
     }
 
     public void ClickedTile() {
-        if (active & !flaged) {
+        if (active & !flaged)
+        {
             active = false;
 
             if (isMine)
             {
-                spriteRenderer.sprite = mineHitTile;
+                print(x + " " + y + " mina!!!!!!");
+                spriteRenderer.sprite = mineWrongTile;
+                active = false;
             }
             else
             {
+                print(x + " " + y + " mine: " + mineCount);
                 spriteRenderer.sprite = clickedTiles[mineCount];
+                active = false;
+
+                if (mineCount == 0)
+                {
+                    print(x + " "+y + " mine: " + mineCount);
+                    game.ClickNeighbours(this);
+                }
             }
         }
+    }
+
+  
+    
+
+    public void RevealAllMines()
+    {
+        if (isMine) spriteRenderer.sprite = mineTile;
+        
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
